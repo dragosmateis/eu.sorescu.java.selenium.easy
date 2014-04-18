@@ -17,8 +17,7 @@ public class Browser {
 		return this.seleniumWrapper.url();
 	}
 
-	public Object evalJs(String expression, Object... params)
-			throws IOException {
+	public Object evalJs(String expression, Object... params) throws IOException {
 		if (params == null)
 			params = new Object[0];
 		return this.seleniumWrapper.eval(expression, params);
@@ -148,5 +147,9 @@ public class Browser {
 					throw t;
 			}
 		}
+	}
+
+	public final void close() {
+		this.seleniumWrapper.driver.close();
 	}
 }
