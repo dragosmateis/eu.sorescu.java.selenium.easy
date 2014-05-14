@@ -26,6 +26,8 @@ public class Browser {
 	}
 
 	public String url() {
+		if (this.seleniumWrapper == null)
+			return null;
 		return this.seleniumWrapper.url();
 	}
 
@@ -88,6 +90,7 @@ public class Browser {
 			}
 		}
 	}
+
 	public void val(String path, Number value) throws Throwable {
 		Timeout timeout = new Timeout(this.GLOBAL_TIMEOUT);
 		for (;;) {
@@ -100,6 +103,7 @@ public class Browser {
 			}
 		}
 	}
+
 	public void val(String path, boolean value) throws Throwable {
 		Timeout timeout = new Timeout(this.GLOBAL_TIMEOUT);
 		for (;;) {
