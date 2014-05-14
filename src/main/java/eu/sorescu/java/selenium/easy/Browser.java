@@ -13,12 +13,13 @@ public class Browser {
 			this.seleniumWrapper = new SeleniumWrapper();
 		if (this.seleniumWrapper != null) {
 			String currentUrl = this.seleniumWrapper.url();
-			if (currentUrl != null)
-				try {
-					url = new URL(new URL(currentUrl), url).toString();
-				} catch (MalformedURLException e) {
-					throw new RuntimeException(e);
-				}
+			if (currentUrl.substring(0, 4).equals("http"))
+				if (currentUrl != null)
+					try {
+						url = new URL(new URL(currentUrl), url).toString();
+					} catch (MalformedURLException e) {
+						throw new RuntimeException(e);
+					}
 		}
 		this.seleniumWrapper.url(url);
 		return this;
