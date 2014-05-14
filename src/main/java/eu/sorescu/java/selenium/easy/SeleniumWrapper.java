@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -110,6 +109,7 @@ public class SeleniumWrapper {
 			driver.executeScript(getScript("jquery-1.11.0.min.js"));
 			driver.executeScript("jQuery.noConflict()");
 		}
+		System.out.println(script);
 		return driver.executeScript(script, args);
 	}
 

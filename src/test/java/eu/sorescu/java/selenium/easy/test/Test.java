@@ -7,6 +7,10 @@ public class Test {
 		Browser browser = new Browser();
 		browser.url("http://www.google.com");
 		browser.val("input[name=q]", "Test");
-		browser.close();
+		browser.url("http://www.csee.wvu.edu/~riggs/html/select_example.html");
+		browser.val("select[name=report]", "Week 3");
+		browser.val("select[name=report]", "week2.html");
+		browser.val("select[name=report]", 2);
+		// browser.close();
 	}
 }

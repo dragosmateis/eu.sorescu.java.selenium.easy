@@ -22,7 +22,7 @@ public class WebElementReference {
 		this.element = element;
 	}
 
-	public void set(String value) throws IOException {
+	public void set(Object value) throws IOException {
 		this.seleniumWrapper.SwitchToPath(this.path);
 		this.seleniumWrapper.eval(
 				SeleniumWrapper.getScript("WebElementSetValue.js"),

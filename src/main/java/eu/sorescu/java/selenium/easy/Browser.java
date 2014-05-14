@@ -88,6 +88,30 @@ public class Browser {
 			}
 		}
 	}
+	public void val(String path, Number value) throws Throwable {
+		Timeout timeout = new Timeout(this.GLOBAL_TIMEOUT);
+		for (;;) {
+			try {
+				this.seleniumWrapper.UNIQUE(path).set(value);
+				return;
+			} catch (Throwable t) {
+				if (timeout.done())
+					throw t;
+			}
+		}
+	}
+	public void val(String path, boolean value) throws Throwable {
+		Timeout timeout = new Timeout(this.GLOBAL_TIMEOUT);
+		for (;;) {
+			try {
+				this.seleniumWrapper.UNIQUE(path).set(value);
+				return;
+			} catch (Throwable t) {
+				if (timeout.done())
+					throw t;
+			}
+		}
+	}
 
 	public void testEQ(String selector, String value) throws Throwable {
 		Timeout timeout = new Timeout(this.GLOBAL_TIMEOUT);
