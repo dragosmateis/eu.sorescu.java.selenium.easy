@@ -95,10 +95,11 @@ public class SeleniumWrapper {
 
 	private static final Properties scriptCache = new Properties();
 
-	public final String getScript(String fileName) throws IOException {
+	public static final String getScript(String fileName) throws IOException {
 		if (!scriptCache.containsKey(fileName)) {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			IOUtils.copy(this.getClass().getResourceAsStream(fileName), baos);
+			IOUtils.copy(SeleniumWrapper.class.getResourceAsStream(fileName),
+					baos);
 			scriptCache.setProperty(fileName, baos.toString());
 		}
 		return scriptCache.getProperty(fileName);

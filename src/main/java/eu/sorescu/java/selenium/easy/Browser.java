@@ -60,7 +60,6 @@ public class Browser {
 					throw t;
 			}
 		}
-		;
 		targetObject.type(value);
 	}
 
@@ -100,5 +99,9 @@ public class Browser {
 					throw t;
 			}
 		}
+	}
+
+	public void close() {
+		this.seleniumWrapper.close();
 	}
 }
