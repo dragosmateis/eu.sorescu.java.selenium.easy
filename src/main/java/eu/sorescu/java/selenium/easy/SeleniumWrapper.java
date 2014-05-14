@@ -8,7 +8,9 @@ import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
 import org.openqa.selenium.OutputType;
@@ -25,7 +27,7 @@ public class SeleniumWrapper {
 
 	public ChromeDriver driver;
 
-	public SeleniumWrapper()  {
+	public SeleniumWrapper() {
 		setChromeDriverPath();
 		DesiredCapabilities dc = new DesiredCapabilities();
 		dc.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR,
@@ -34,11 +36,12 @@ public class SeleniumWrapper {
 		ChromeOptions chromeOptions = new ChromeOptions();
 		DesiredCapabilities capabilities = DesiredCapabilities.chrome();
 		try {
-			capabilities.setCapability("chrome.prefs", ImmutableMap.of(
-					"download.default_directory",
-					File.createTempFile("d1402251426", "delete_me").getParent(),
-					"download.prompt_for_download", "false",
-					"download.extensions_to_open", "pdf"));
+			capabilities.setCapability("chrome.prefs", ImmutableMap
+					.of("download.default_directory",
+							File.createTempFile("d1402251426", "delete_me")
+									.getParent(),
+							"download.prompt_for_download", "false",
+							"download.extensions_to_open", "pdf"));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -90,13 +93,20 @@ public class SeleniumWrapper {
 		return driver.getScreenshotAs(OutputType.FILE);
 	}
 
+	private static final Properties scriptCache = new Properties();
+
+	public final String getScript(String fileName) throws IOException {
+		if (!scriptCache.containsKey(fileName)) {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			IOUtils.copy(this.getClass().getResourceAsStream(fileName), baos);
+			scriptCache.setProperty(fileName, baos.toString());
+		}
+		return scriptCache.getProperty(fileName);
+	}
+
 	public Object eval(String script, Object... args) throws IOException {
 		if (!"function".equals(driver.executeScript("return typeof(jQuery)"))) {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			IOUtils.copy(
-					this.getClass().getResourceAsStream("jquery-1.11.0.min.js"),
-					baos);
-			driver.executeScript(new String(baos.toByteArray()));
+			driver.executeScript(getScript("jquery-1.11.0.min.js"));
 			driver.executeScript("jQuery.noConflict()");
 		}
 		return driver.executeScript(script, args);
