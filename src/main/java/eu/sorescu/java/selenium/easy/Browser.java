@@ -102,6 +102,20 @@ public class Browser {
 		}
 	}
 
+	public void testRegex(String selector, String regex) throws Throwable {
+		Timeout timeout = new Timeout(this.GLOBAL_TIMEOUT);
+		for (;;) {
+			try {
+				if (this.seleniumWrapper.UNIQUE(selector).get().toString()
+						.matches(regex))
+					return;
+			} catch (Throwable t) {
+				if (timeout.done())
+					throw t;
+			}
+		}
+	}
+
 	public void close() {
 		this.seleniumWrapper.close();
 	}
