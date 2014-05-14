@@ -24,34 +24,17 @@ public class WebElementReference {
 
 	public void set(String value) throws IOException {
 		this.seleniumWrapper.SwitchToPath(this.path);
-		// this.seleniumWrapper.driver.findElement(by)
-		this.seleniumWrapper
-				.eval("var nodes=jQuery(arguments[0]);nodes.val(arguments[1]);return nodes;",
-						this.element, value);
+		this.seleniumWrapper.eval(
+				SeleniumWrapper.getScript("WebElementSetValue.js"),
+				this.element, value);
 	}
 
 	public Object get() throws IOException {
 		this.seleniumWrapper.SwitchToPath(this.path);
-		return this.seleniumWrapper
-				.eval("var jq=jQuery(arguments[0]);var tn=jq.prop('tagName').toLowerCase();if(tn=='select')return jq.val();if(tn=='input')return jq.val();if(tn=='textarea')return jq.val();return jq.text();",
-						this.element);
+		return this.seleniumWrapper.eval(
+				SeleniumWrapper.getScript("WebElementGetValue.js"),
+				this.element);
 	}
-
-	//
-	// public void draw(Point[] points) throws Exception {
-	// try {
-	// this.seleniumWrapper.SwitchToPath(this.path);
-	// element.getText();
-	// Actions action = new Actions(this.seleniumWrapper.driver);
-	// action.moveToElement(element, points[0].x, points[0].y)
-	// .clickAndHold()
-	// .dragAndDropBy(element, points[1].x - points[0].x,
-	// points[1].y - points[0].y).build().perform();
-	// } catch (Throwable t) {
-	// throw new Exception("e1402121529 - could not get native "
-	// + this.mnemonic + " : " + t.getMessage(), t);
-	// }
-	// }
 
 	public void click() throws Exception {
 		try {
