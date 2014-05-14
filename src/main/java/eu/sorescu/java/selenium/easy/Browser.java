@@ -1,6 +1,8 @@
 package eu.sorescu.java.selenium.easy;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class Browser {
 	public SeleniumWrapper seleniumWrapper = null;
@@ -9,6 +11,15 @@ public class Browser {
 	public Browser url(String url) {
 		if (this.seleniumWrapper == null)
 			this.seleniumWrapper = new SeleniumWrapper();
+		if (this.seleniumWrapper != null) {
+			String currentUrl = this.seleniumWrapper.url();
+			if (currentUrl != null)
+				try {
+					url = new URL(new URL(currentUrl), url).toString();
+				} catch (MalformedURLException e) {
+					throw new RuntimeException(e);
+				}
+		}
 		this.seleniumWrapper.url(url);
 		return this;
 	}
@@ -24,13 +35,6 @@ public class Browser {
 		return this.seleniumWrapper.eval(expression, params);
 	}
 
-	/*
-	 * public void draw(String path, Point[] points) throws Throwable { Timeout
-	 * timeout = new Timeout(this.GLOBAL_TIMEOUT); for (;;) { try {
-	 * this.seleniumWrapper.UNIQUE(path).draw(points); return; } catch
-	 * (Throwable t) { t.printStackTrace(); if (timeout.done()) throw t; } } }
-	 */
-
 	public void click(String path) throws Throwable {
 		Timeout timeout = new Timeout(this.GLOBAL_TIMEOUT);
 		for (;;) {
@@ -43,36 +47,6 @@ public class Browser {
 			}
 		}
 	}
-
-	// public int clickAny(String[] path) throws Throwable {
-	// Timeout timeout = new Timeout(this.GLOBAL_TIMEOUT);
-	// int i = 0;
-	// for (;;) {
-	// try {
-	// this.seleniumWrapper.UNIQUE(path[i]).click();
-	// return i;
-	// } catch (Throwable t) {
-	// if (timeout.done())
-	// throw new RuntimeException("None available: " +
-	// Arrays.asList(path).toString());
-	// }
-	// i++;
-	// i %= path.length;
-	// }
-	// }
-	//
-	// public void clickAnyUntilFirst(String[] strings) throws Throwable {
-	// Timeout timeout = new Timeout(this.GLOBAL_TIMEOUT);
-	// for (;;) {
-	// try {
-	// if (this.clickAny(strings) == 0)
-	// return;
-	// } catch (Throwable t) {
-	// if (timeout.done())
-	// throw t;
-	// }
-	// }
-	// }
 
 	public void type(String target, String value) throws Throwable {
 		Timeout timeout = new Timeout(this.GLOBAL_TIMEOUT);
@@ -114,28 +88,6 @@ public class Browser {
 			}
 		}
 	}
-
-	// public void setForm(Properties kv) throws Throwable {
-	// Timeout timeout = new Timeout(this.GLOBAL_TIMEOUT);
-	// for (;;) {
-	// boolean success = true;
-	// for (String key : kv.stringPropertyNames()) {
-	// try {
-	// if (this.val(key).equals(kv.getProperty(key)))
-	// continue;
-	// success = false;
-	// this.val(key, kv.getProperty(key));
-	// } catch (Throwable t) {
-	// if (timeout.done())
-	// throw t;
-	// }
-	// }
-	// if (success)
-	// return;
-	// if (timeout.done())
-	// throw new TimeoutException("e1310101805 - could not set all values");
-	// }
-	// }
 
 	public void testEQ(String selector, String value) throws Throwable {
 		Timeout timeout = new Timeout(this.GLOBAL_TIMEOUT);
