@@ -1,3 +1,5 @@
+package eu.sorescu.java.selenium.easy.test;
+
 import eu.sorescu.java.selenium.easy.Browser;
 
 public class Test {
