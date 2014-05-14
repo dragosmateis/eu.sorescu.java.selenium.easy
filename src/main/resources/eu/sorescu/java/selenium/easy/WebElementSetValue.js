@@ -1,6 +1,10 @@
 var jq=jQuery(arguments[0]);
 var tn=jq.prop('tagName').toLowerCase();
-if(tn=='input')return jq.val(arguments[1]);
+if(tn=='input'){
+	if(jq[0].type=='checkbox')
+		jq[0].checked=arguments[1];
+	return jq.val(arguments[1]);
+}
 if(tn=='textarea')return jq.val(arguments[1]);
 if(tn=='select'){
 	var options=jq[0];
