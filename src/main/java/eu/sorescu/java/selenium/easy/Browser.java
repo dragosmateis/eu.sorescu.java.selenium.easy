@@ -147,4 +147,19 @@ public class Browser {
 	public void close() {
 		this.seleniumWrapper.close();
 	}
+
+	public String attr(String path, String attrName) throws Throwable {
+		Timeout timeout = new Timeout(this.GLOBAL_TIMEOUT);
+		for (;;) {
+			try {
+				return String.valueOf(this.seleniumWrapper.UNIQUE(path)
+						.getAttr(attrName));
+			} catch (Throwable t) {
+				if (timeout.done()) {
+					t.printStackTrace();
+					throw t;
+				}
+			}
+		}
+	}
 }

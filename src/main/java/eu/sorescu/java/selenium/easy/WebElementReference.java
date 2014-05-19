@@ -1,6 +1,8 @@
 package eu.sorescu.java.selenium.easy;
 
 import java.io.IOException;
+import java.util.Map;
+
 import org.openqa.selenium.WebElement;
 
 public class WebElementReference {
