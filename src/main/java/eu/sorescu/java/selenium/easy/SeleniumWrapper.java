@@ -9,7 +9,6 @@ import java.net.URI;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
@@ -25,7 +24,7 @@ import com.google.common.collect.ImmutableMap;
 
 public class SeleniumWrapper {
 
-	public ChromeDriver driver;
+	private ChromeDriver driver;
 
 	public SeleniumWrapper() {
 		setChromeDriverPath();
@@ -110,7 +109,6 @@ public class SeleniumWrapper {
 			driver.executeScript(getScript("jquery-1.11.0.min.js"));
 			driver.executeScript("jQuery.noConflict()");
 		}
-		System.out.println(script);
 		return driver.executeScript(script, args);
 	}
 
@@ -139,23 +137,19 @@ public class SeleniumWrapper {
 			for (int tokenIdx = 1; tokenIdx < tokens.length; tokenIdx++)
 				if (tokens[tokenIdx].length() > 0)
 					driver.switchTo().frame(Integer.parseInt(tokens[tokenIdx]));
-			// System.out.println(" SwitchToPath SETTING path " + path);
 			this.currentPath = path;
 		} catch (Throwable t) {
-			// System.out.println(" SwitchToPath FAILED SETTING path " + path);
 			this.currentPath = "invalid";
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public WebElementReference UNIQUE(String selector) throws IOException {
+	private WebElementReference UNIQUE(String selector) throws IOException {
 		List<WebElementReference> result = new ArrayList<WebElementReference>();
 		try {
-			// System.out.println("************************* " + selector);
 			List<WebElement> webElements = (List<WebElement>) eval(
 					"var result=[];var temp=jQuery(arguments[0]);for(var i=0;i<temp.length;i++)result[i]=temp[i];return result;",
 					selector);
-			// System.out.println("*** " + webElements.size());
 			if (webElements.size() == 1)
 				return new WebElementReference(this, this.currentPath,
 						webElements.get(0), selector);
@@ -178,7 +172,6 @@ public class SeleniumWrapper {
 						result.add(new WebElementReference(this,
 								this.currentPath, element, selector));
 				} catch (Throwable t) {
-					// t.printStackTrace();
 				}
 				List<WebElement> iframes = driver
 						.findElementsByTagName("iframe");
@@ -187,7 +180,6 @@ public class SeleniumWrapper {
 						toDo.add(currentPath + " " + i);
 					}
 			} catch (Throwable e) {
-				// e.printStackTrace();
 			}
 		}
 		if (result.size() == 1)
@@ -195,6 +187,25 @@ public class SeleniumWrapper {
 		else
 			throw new RuntimeException("UNIQUE " + result.size()
 					+ " results for: " + selector);
+	}
+
+	int GLOBAL_TIMEOUT = 10000;
+
+	public WebElementReference WAIT_UNIQUE(String selector) throws IOException {
+		Timeout timeout = new Timeout(GLOBAL_TIMEOUT);
+		for (;;) {
+			try {
+				WebElementReference result = UNIQUE(selector);
+				if (result != null)
+					return result;
+				if (timeout.done())
+					throw new RuntimeException("No element found for "
+							+ selector);
+			} catch (Throwable t) {
+				if (timeout.done())
+					throw new RuntimeException(t);
+			}
+		}
 	}
 
 	@Override

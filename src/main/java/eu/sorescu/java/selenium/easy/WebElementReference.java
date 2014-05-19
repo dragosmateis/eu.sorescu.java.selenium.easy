@@ -1,7 +1,6 @@
 package eu.sorescu.java.selenium.easy;
 
 import java.io.IOException;
-import java.util.Map;
 
 import org.openqa.selenium.WebElement;
 
@@ -30,9 +29,12 @@ public class WebElementReference {
 				SeleniumWrapper.getScript("WebElementSetValue.js"),
 				this.element, value);
 	}
+
 	public Object with(String expression) throws IOException {
 		this.seleniumWrapper.SwitchToPath(this.path);
-		return this.seleniumWrapper.eval(SeleniumWrapper.getScript("WebElementWith.js"),this.element,expression);
+		return this.seleniumWrapper.eval(
+				SeleniumWrapper.getScript("WebElementWith.js"), this.element,
+				expression);
 	}
 
 	public Object get() throws IOException {
