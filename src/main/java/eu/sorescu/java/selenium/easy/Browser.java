@@ -162,4 +162,18 @@ public class Browser {
 			}
 		}
 	}
+
+	public Object with(String context, String expression) throws Throwable {
+		Timeout timeout = new Timeout(this.GLOBAL_TIMEOUT);
+		for (;;) {
+			try {
+				return this.seleniumWrapper.UNIQUE(context).with(expression);
+			} catch (Throwable t) {
+				if (timeout.done()) {
+					t.printStackTrace();
+					throw t;
+				}
+			}
+		}
+	}
 }

@@ -30,6 +30,10 @@ public class WebElementReference {
 				SeleniumWrapper.getScript("WebElementSetValue.js"),
 				this.element, value);
 	}
+	public Object with(String expression) throws IOException {
+		this.seleniumWrapper.SwitchToPath(this.path);
+		return this.seleniumWrapper.eval(SeleniumWrapper.getScript("WebElementWith.js"),this.element,expression);
+	}
 
 	public Object get() throws IOException {
 		this.seleniumWrapper.SwitchToPath(this.path);
@@ -83,4 +87,5 @@ public class WebElementReference {
 		this.seleniumWrapper.SwitchToPath(this.path);
 		return element.getTagName();
 	}
+
 }

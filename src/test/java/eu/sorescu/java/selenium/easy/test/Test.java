@@ -11,6 +11,7 @@ public class Test {
 		browser.val("select[name=report]", "Week 3");
 		browser.val("select[name=report]", "week2.html");
 		browser.val("select[name=report]", 2);
+		System.out.println(browser.with("select[name=report]","this[0].value"));
 		// browser.close();
 	}
 }
