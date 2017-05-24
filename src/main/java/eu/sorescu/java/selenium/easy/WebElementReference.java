@@ -25,21 +25,21 @@ public class WebElementReference {
 
 	public void set(Object value) throws IOException {
 		this.seleniumWrapper.SwitchToPath(this.path);
-		this.seleniumWrapper.eval(
+		this.seleniumWrapper.executeScript(
 				SeleniumWrapper.getScript("WebElementSetValue.js"),
 				this.element, value);
 	}
 
 	public Object with(String expression) throws IOException {
 		this.seleniumWrapper.SwitchToPath(this.path);
-		return this.seleniumWrapper.eval(
+		return this.seleniumWrapper.executeScript(
 				SeleniumWrapper.getScript("WebElementWith.js"), this.element,
 				expression);
 	}
 
 	public Object get() throws IOException {
 		this.seleniumWrapper.SwitchToPath(this.path);
-		return this.seleniumWrapper.eval(
+		return this.seleniumWrapper.executeScript(
 				SeleniumWrapper.getScript("WebElementGetValue.js"),
 				this.element);
 	}
